@@ -1,0 +1,5 @@
+[tool.poetry]
+name = "Hive-Box"
+version = "0.0.1"
+description = "Your project description"
+authors = ["Shaimaa Turky <your-email@example.com>"]
