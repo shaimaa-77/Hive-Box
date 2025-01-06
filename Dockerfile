@@ -1,6 +1,9 @@
 #base image
 FROM python:3.11-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8000
 # Set the working directory in the container
 WORKDIR /app
 
@@ -12,6 +15,11 @@ COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 #copy all file 
 COPY . /app
-
+#add user for non root usage
+RUN adduser --disabled-password --gecos '' appuser
+RUN chown -R appuser:appuser /app
+USER appuser
+# Expose the port
+EXPOSE $PORT
 # Set the default command to run your app
-CMD ["poetry", "run","python3", "app_version.py" ]
+CMD ["uvicorn", "main:app" ,"--host","0.0.0.0","--port","8000"]
