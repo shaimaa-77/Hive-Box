@@ -15,10 +15,10 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: chechout code
-          uses: action/checkout@v3
+          uses: actions/checkout@v3
         
         - name: setup python
-          uses: action/setup-python@v4
+          uses: actions/setup-python@v4
           with:
             python-version: 3.11
         - name: install dependances
@@ -37,7 +37,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: checkout code
-            uses: action/checkout@v3
+            uses: actions/checkout@v3
         
           - name: build docker image
             run: docker build -t hive-box .
