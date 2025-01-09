@@ -9,5 +9,3 @@ def test_version_endpoint():
     assert response.status_code == 200
     assert "version" in response.json()
     assert response.json()["version"] == app.version
-
-

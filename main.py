@@ -26,8 +26,8 @@ def get_temperature_of_sense_id(sensor_id):
         data = response.json()
         
         if "sensors" not in data:
-            print(f"No sensors found in response for 
-                  {sensor_id}", file=sys.stderr)
+            print(f"No sensors found in response for {sensor_id}",
+                   file=sys.stderr)
             return 0
             
         for sensor in data.get("sensors", []):
