@@ -35,8 +35,8 @@ def get_temperature_of_sense_id(sensor_id):
                 last_measurement = sensor.get("lastMeasurement")
                 if last_measurement and "value" in last_measurement:
                     return float(last_measurement["value"])
-                print(f"No valid measurement found for temperature sensor in 
-                      {sensor_id}", file=sys.stderr)
+                print(f"No valid measurement found for temperature sensor in {sensor_id}",
+                       file=sys.stderr)
                 return 0
                 
         print(f"No temperature sensor found for 
