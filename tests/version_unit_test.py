@@ -10,3 +10,4 @@ def test_version_endpoint():
     assert "version" in response.json()
     assert response.json()["version"] == app.version
 
+

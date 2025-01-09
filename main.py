@@ -5,11 +5,14 @@ from constants import OPEN_SENSE_API_URL
 import sys
 import toml
 
+
 def get_app_version():
     try:
         with open("pyproject.toml", "r", encoding="utf-8") as file:
             config = toml.load(file)
-        app_version = config.get("tool", {}).get("poetry", {}).get("version", "unknown version")
+        app_version = config.get("tool", {}).get(
+            "poetry", {}).get(
+                "version", "unknown version")
         return app_version
     except FileNotFoundError:
         return "pyproject.toml not found"
@@ -23,7 +26,8 @@ def get_temperature_of_sense_id(sensor_id):
         data = response.json()
         
         if "sensors" not in data:
-            print(f"No sensors found in response for {sensor_id}", file=sys.stderr)
+            print(f"No sensors found in response for 
+                  {sensor_id}", file=sys.stderr)
             return 0
             
         for sensor in data.get("sensors", []):
@@ -31,17 +35,22 @@ def get_temperature_of_sense_id(sensor_id):
                 last_measurement = sensor.get("lastMeasurement")
                 if last_measurement and "value" in last_measurement:
                     return float(last_measurement["value"])
-                print(f"No valid measurement found for temperature sensor in {sensor_id}", file=sys.stderr)
+                print(f"No valid measurement found for temperature sensor in 
+                      {sensor_id}", file=sys.stderr)
                 return 0
                 
-        print(f"No temperature sensor found for {sensor_id}", file=sys.stderr)
+        print(f"No temperature sensor found for 
+              {sensor_id}", file=sys.stderr)
         return 0
         
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data for sensor {sensor_id}: {e}", file=sys.stderr)
+        print(f"Error fetching data for sensor 
+              {sensor_id}: {e}", 
+              file=sys.stderr)
         return 0
     except (ValueError, TypeError) as e:
-        print(f"Error processing data for sensor {sensor_id}: {e}", file=sys.stderr)
+        print(f"Error processing data for sensor 
+              {sensor_id}: {e}", file=sys.stderr)
         return 0
     
 
@@ -52,12 +61,15 @@ app = FastAPI(
     version=get_app_version(),
 )
 
+
 # Create router for temperature endpoints
 temperature_router = APIRouter(tags=["Temperature"])
+
 
 @app.get("/version")
 async def get_version():
     return {"version": get_app_version()}
+
 
 @temperature_router.get("/temperature")
 async def get_box_temperature():
@@ -74,7 +86,8 @@ async def get_box_temperature():
         if not valid_temperatures:
             return {"error": "No valid temperature readings available"}
             
-        average_temperature = round(sum(valid_temperatures) / len(valid_temperatures), 2)
+        average_temperature = round(sum(valid_temperatures) 
+                                    / len(valid_temperatures), 2)
         
         return {
             "average_temperature": average_temperature,
@@ -85,11 +98,13 @@ async def get_box_temperature():
         print(f"Error processing temperatures: {e}", file=sys.stderr)
         return {"error": str(e)}
 
+
 # Include the temperature router
 app.include_router(temperature_router, prefix="/api")
+
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 
-    
+
