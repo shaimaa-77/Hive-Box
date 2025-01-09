@@ -44,8 +44,7 @@ def get_temperature_of_sense_id(sensor_id):
         return 0
         
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data for sensor 
-              {sensor_id}: {e}", 
+        print(f"Error fetching data for sensor {sensor_id}: {e}", 
               file=sys.stderr)
         return 0
     except (ValueError, TypeError) as e:
