@@ -39,8 +39,8 @@ def get_temperature_of_sense_id(sensor_id):
                        file=sys.stderr)
                 return 0
                 
-        print(f"No temperature sensor found for 
-              {sensor_id}", file=sys.stderr)
+        print(f"No temperature sensor found for {sensor_id}",
+               file=sys.stderr)
         return 0
         
     except requests.exceptions.RequestException as e:
@@ -49,8 +49,8 @@ def get_temperature_of_sense_id(sensor_id):
               file=sys.stderr)
         return 0
     except (ValueError, TypeError) as e:
-        print(f"Error processing data for sensor 
-              {sensor_id}: {e}", file=sys.stderr)
+        print(f"Error processing data for sensor {sensor_id}: {e}",
+               file=sys.stderr)
         return 0
     
 
