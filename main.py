@@ -26,8 +26,7 @@ def get_temperature_of_sense_id(sensor_id):
         data = response.json()
         
         if "sensors" not in data:
-            print(f"No sensors found in response for {sensor_id}",
-                   file=sys.stderr)
+            print(f"No sensors found in response for {sensor_id}",file=sys.stderr)
             return 0
             
         for sensor in data.get("sensors", []):
@@ -35,21 +34,17 @@ def get_temperature_of_sense_id(sensor_id):
                 last_measurement = sensor.get("lastMeasurement")
                 if last_measurement and "value" in last_measurement:
                     return float(last_measurement["value"])
-                print(f"No valid measurement found for temperature sensor in {sensor_id}",
-                       file=sys.stderr)
+                print(f"No valid measurement found for temperature sensor in {sensor_id}", file=sys.stderr)
                 return 0
                 
-        print(f"No temperature sensor found for {sensor_id}",
-               file=sys.stderr)
+        print(f"No temperature sensor found for {sensor_id}", file=sys.stderr)
         return 0
         
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data for sensor {sensor_id}: {e}", 
-              file=sys.stderr)
+        print(f"Error fetching data for sensor {sensor_id}: {e}", file=sys.stderr)
         return 0
     except (ValueError, TypeError) as e:
-        print(f"Error processing data for sensor {sensor_id}: {e}",
-               file=sys.stderr)
+        print(f"Error processing data for sensor {sensor_id}: {e}", file=sys.stderr)
         return 0
     
 
