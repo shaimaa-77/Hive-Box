@@ -13,6 +13,7 @@ def get_app_version():
         return app_version
     except FileNotFoundError:
         return "pyproject.toml not found"
+    
 
 def get_temperature_of_sense_id(sensor_id):
     try:
@@ -42,6 +43,7 @@ def get_temperature_of_sense_id(sensor_id):
     except (ValueError, TypeError) as e:
         print(f"Error processing data for sensor {sensor_id}: {e}", file=sys.stderr)
         return 0
+    
 
 # Create the FastAPI app instance
 app = FastAPI(
@@ -89,3 +91,5 @@ app.include_router(temperature_router, prefix="/api")
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+    
