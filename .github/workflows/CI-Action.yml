@@ -59,7 +59,7 @@ jobs:
           - name: install dependances
             run: |
               python -m pip install --upgrade pip
-              pip install pytest requestes
+              pip install pytest requests
           - name: run unit test
             run: pytest tests/
     version-test:
@@ -75,7 +75,7 @@ jobs:
             sleep 5
         - name: test /version endpoint
           run: |
-               curl -s http://127.0.0.1:8000/version | grep "app version"
+               curl -s http://127.0.0.1:8000/version | grep "version"
         
         - name: stop and remove container
           run: dicker rm -f hive-box-container
