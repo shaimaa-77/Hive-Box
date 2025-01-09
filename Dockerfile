@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 COPY . /app
 #add user for non root usage
 RUN adduser --disabled-password --gecos '' appuser \
-    && mkdir /app \
+    && mkdir -p /app \
     && chown -R appuser:appuser /app
 USER appuser
 # Expose the port
