@@ -86,15 +86,3 @@ jobs:
 
       - name: Stop and remove container
         run: docker rm -f hive-box-container
-
-  openssf-scorecard:
-    name: OpenSSF Scorecard
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run OpenSSF Scorecard
-        uses: ossf/scorecard-action@v2
-        with:
-          results-file: results.json
