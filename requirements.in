@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-requests
-pytest
-httpx
-toml
-poetry
-prometheus-fastapi-instrumentator
