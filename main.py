@@ -86,3 +86,4 @@ async def get_temperature():
     except Exception as e:
         print(f"Error processing temperatures: {e}", file=sys.stderr)
         return {"error": str(e)}
+

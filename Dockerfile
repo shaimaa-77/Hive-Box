@@ -22,3 +22,4 @@ USER appuser
 EXPOSE 8000
 # Set the default command to run your app
 CMD ["uvicorn", "main:app" ,"--host","0.0.0.0","--port","8000"]
+
