@@ -1,25 +1,91 @@
-
-from fastapi import FastAPI
-from fastapi import APIRouter
-import requests
-from constants import OPEN_SENSE_API_URL
 import sys
 import toml
+import time
+from fastapi import FastAPI
+from datetime import datetime, timezone
+import requests
+from constants import OPEN_SENSE_API_URL
+
 
 def get_app_version():
+    # Get app version
     try:
-        with open("pyproject.toml","r",encoding="utf-8") as file:
-            config=toml.load(file)
-        app_version=config.get("tool",{}).get(
-            "poetry",{}).get("version","unknown version")
+        with open("pyproject.toml", "r", encoding="utf-8") as file:
+            config = toml.load(file)
+        app_version = config.get("tool", {}).get("poetry", {}).get("version", "unknown version")
         return app_version
     except FileNotFoundError:
         return "pyproject.toml not found"
+
+
+def get_temperature_of_sensor_id(sensor_id):
+    # Get temperature of sensors
+    try:
+        url = f"{OPEN_SENSE_API_URL}/boxes/{sensor_id}"
+        response = requests.get(url, timeout=50)
+        data = response.json()
+        # Iterate through all the boxes in the response
+        if "sensors" not in data:
+            print(
+                f"No sensors found in response for {sensor_id}",
+                file=sys.stderr
+            )
+            return 0
+        for sensor in data.get("sensors", []):
+            if sensor.get("title") == "Temperatur":
+                    # Get the last measurement
+                last_measurement = sensor.get("lastMeasurement")                              
+                if last_measurement and "value" in last_measurement:
+                    return float(last_measurement["value"])
+                print(
+                    "No valid measurement found for temperature "
+                    f"sensor in {sensor_id}",
+                    file=sys.stderr
+                )
+                return 0
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching   sensor {sensor_id}: {e}", file=sys.stderr)
+        return 0
+    except (ValueError, TypeError) as e:
+        print(f"Error processing  sensor {sensor_id}: {e}", file=sys.stderr)
+        return 0
+
+
 app = FastAPI(
     title="Hive Box",
     description="Hive Box project",
-    version=get_app_version(),
 )
+
+
 @app.get("/version")
 async def get_version():
+    # Return app version
     return {"version": get_app_version()}
+
+
+@app.get("/temperature")
+async def get_temperature():
+    sensor_ids = [
+        "5eba5fbad46fb8001b799786",
+        "5eb99cacd46fb8001b2ce04c",
+        "5e60cf5557703e001bdae7f8",
+    ]
+    try:
+        temperatures=[get_temperature_of_sensor_id(ID) for ID in sensor_ids]
+        valid_temperature=[t for t in temperatures if t!=0]
+        if not valid_temperature:
+            return {"error": "not valid readings for temperatures for sensors"}
+        average_temperature = round(
+            sum(valid_temperature) / len(valid_temperature),
+            2
+        )
+        return {
+        "avarage temperatures": average_temperature,
+        "sensor_count": len(valid_temperature),
+        "total_sensors": sensor_ids
+
+        }
+    except Exception as e:
+        print(f"Error processing temperatures: {e}", file=sys.stderr)
+        return {"error": str(e)}
+
