@@ -19,7 +19,7 @@ jobs:
         - name: use docker file with hadolint
           uses: hadolint/hadolint-action@v3.1.0
           with:
-            dockerfile: ../../Dockerfile
+            dockerfile: Dockerfile
   build:
       runs-on: ubuntu-latest
       needs: lint
