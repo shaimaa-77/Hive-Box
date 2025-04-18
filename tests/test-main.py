@@ -16,4 +16,3 @@ def test_app_temperature():
     respond = client.get("/temperature")
     assert respond.status_code == 200
     assert "average_temperatures" in respond.json
-
