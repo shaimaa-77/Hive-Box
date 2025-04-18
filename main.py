@@ -6,7 +6,7 @@ from constants import OPEN_SENSE_API_URL
 
 
 def get_app_version():
-    # Get app version
+# Get app version
     try:
         with open("pyproject.toml", "r", encoding="utf-8") as file:
             config = toml.load(file)
@@ -16,9 +16,9 @@ def get_app_version():
     except FileNotFoundError:
         return "pyproject.toml not found"
 
-#add blank line
+
 def get_temperature_of_sensor_id(sensor_id):
-    # Get temperature of sensors
+# Get temperature of sensors
     try:
         url = f"{OPEN_SENSE_API_URL}/boxes/{sensor_id}"
         response = requests.get(url, timeout=50)
@@ -33,7 +33,7 @@ def get_temperature_of_sensor_id(sensor_id):
         for sensor in data.get("sensors", []):
             if sensor.get("title") == "Temperatur":
                     # Get the last measurement
-                last_measurement = sensor.get("lastMeasurement")                         
+                last_measurement = sensor.get("lastMeasurement")                    
                 if last_measurement and "value" in last_measurement:
                     return float(last_measurement["value"])
                 print(
@@ -71,7 +71,7 @@ async def get_temperature():
     ]
     try:
         temperatures = [get_temperature_of_sensor_id(ID) for ID in sensor_ids]
-        valid_temperature = [t for t in temperatures if t!=0]
+        valid_temperature = [t for t in temperatures if t != 0]
         if not valid_temperature:
             return {"error": "not valid readings for temperatures for sensors"}
         average_temperature = round(
@@ -86,4 +86,4 @@ async def get_temperature():
     except Exception as e:
         print(f"Error processing temperatures: {e}", file=sys.stderr)
         return {"error": str(e)}
-    
+
