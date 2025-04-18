@@ -10,8 +10,8 @@ def get_app_version():
     try:
         with open("pyproject.toml", "r", encoding="utf-8") as file:
             config = toml.load(file)
-        app_version = config.get("tool",
-                                  {}).get("poetry", {}).get("version", "unknown version")
+        app_version = config.get("tool",{}).get("poetry", {}).get(
+            "version", "unknown version")
         return app_version
     except FileNotFoundError:
         return "pyproject.toml not found"
@@ -69,8 +69,8 @@ async def get_temperature():
         "5e60cf5557703e001bdae7f8",
     ]
     try:
-        temperatures=[get_temperature_of_sensor_id(ID) for ID in sensor_ids]
-        valid_temperature=[t for t in temperatures if t!=0]
+        temperatures = [get_temperature_of_sensor_id(ID) for ID in sensor_ids]
+        valid_temperature = [t for t in temperatures if t!=0]
         if not valid_temperature:
             return {"error": "not valid readings for temperatures for sensors"}
         average_temperature = round(
@@ -78,12 +78,11 @@ async def get_temperature():
             2
         )
         return {
-        "avarage temperatures": average_temperature,
-        "sensor_count": len(valid_temperature),
-        "total_sensors": sensor_ids
-
+            "average_temperatures": average_temperature,
+            "sensor_count": len(valid_temperature),
+            "total_sensors": sensor_ids
         }
     except Exception as e:
         print(f"Error processing temperatures: {e}", file=sys.stderr)
         return {"error": str(e)}
-
+    
