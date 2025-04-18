@@ -1,8 +1,6 @@
 import sys
 import toml
-import time
 from fastapi import FastAPI
-from datetime import datetime, timezone
 import requests
 from constants import OPEN_SENSE_API_URL
 
@@ -12,11 +10,11 @@ def get_app_version():
     try:
         with open("pyproject.toml", "r", encoding="utf-8") as file:
             config = toml.load(file)
-        app_version = config.get("tool", {}).get("poetry", {}).get("version", "unknown version")
+        app_version = config.get("tool",
+                                  {}).get("poetry", {}).get("version", "unknown version")
         return app_version
     except FileNotFoundError:
         return "pyproject.toml not found"
-
 
 def get_temperature_of_sensor_id(sensor_id):
     # Get temperature of sensors
@@ -88,4 +86,3 @@ async def get_temperature():
     except Exception as e:
         print(f"Error processing temperatures: {e}", file=sys.stderr)
         return {"error": str(e)}
-
