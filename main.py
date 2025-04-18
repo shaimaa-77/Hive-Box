@@ -74,7 +74,7 @@ async def get_temperature():
         temperatures = [get_temperature_of_sensor_id(ID) for ID in sensor_ids]
         valid_temperature = [t for t in temperatures if t != 0]
         if not valid_temperature:
-            return {"error": "Not valid readings for temperatures from sensors"}
+            return {"error": "Not valid readings for temperature from sensors"}
         average_temperature = round(
             sum(valid_temperature) / len(valid_temperature),
             2
