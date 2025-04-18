@@ -3,15 +3,17 @@ from main import app
 
 client = TestClient(app)
 
+
 def test_app_version():
     #test version
-    respond=client.get("/version")
+    respond = client.get("/version")
     assert respond.status_code == 200
     assert "version" in respond.json
 
 
 def test_app_temperature():
     #test temperature
-    respond=client.get("/temperature")
+    respond = client.get("/temperature")
     assert respond.status_code == 200
     assert "average_temperatures" in respond.json
+
